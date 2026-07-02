@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <!-- ==========================================
+         基本設定
+    =========================================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Earthquake Viewer JP</title>
+
+    <!-- ==========================================
+         CSS
+    =========================================== -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- ==========================================
+         Leaflet CSS
+         地図表示ライブラリ
+    =========================================== -->
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+
+<body>
+
+    <!-- ==========================================
+         全体コンテナ
+         Unityなら Canvas
+    =========================================== -->
+    <div class="container">
+
+        <!-- ==========================================
+             ヘッダー
+             Unity：HeaderPanel
+        =========================================== -->
+        <header>
+
+            <!-- 左側 -->
+            <div class="header-title">
+
+                <h1>🌎 Earthquake Viewer JP</h1>
+
+                <p>
+                    日本の地震情報を最新の20件表示しています
+                </p>
+
+            </div>
+
+            <!-- 右側 -->
+            <div class="header-info">
+
+                <div class="info-block">
+
+                    <span class="info-title">
+                        📅 現在日時
+                    </span>
+
+                    <span id="current-date">
+                        ----/--/--
+                    </span>
+
+                    <span id="current-time">
+                        --:--:--
+                    </span>
+
+                </div>
+
+                <div class="info-block">
+
+                    <span class="info-title">
+                        🔄 最終更新
+                    </span>
+
+                    <span id="last-update-date">
+                        ----/--/--
+                    </span>
+
+                    <span id="last-update-time">
+                        --:--:--
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ==========================================
+             状態バー
+        =========================================== -->
+        <section id="status-bar">
+
+            🟢 現在、大きな地震情報はありません
+
+        </section>
+
+        <!-- ==========================================
+             地図エリア
+        =========================================== -->
+        <section id="map-section">
+
+            <div id="map"></div>
+
+        </section>
+
+        <!-- ==========================================
+            更新ボタン
+        ========================================== -->
+        <section id="mode-select">
+
+            <button id="refresh-button">
+                🔄 最新情報に更新
+            </button>
+
+        </section>
+
+        <!-- ==========================================
+             地震一覧
+        =========================================== -->
+        <section id="earthquake-list">
+
+            <!-- JavaScriptからカードを追加 -->
+
+        </section>
+
+    </div>
+
+    <!-- ==========================================
+         JavaScript
+    =========================================== -->
+
+    <!-- Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
