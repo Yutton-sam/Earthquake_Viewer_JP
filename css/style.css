@@ -324,7 +324,113 @@ button:active {
     background: #fff3cd;
     transition: 0.3s;
 }
-#earthquake-list {
+.earthquake-list {
     overflow-y: auto;
     max-height: 60vh; /* or 100vh調整 */
+}
+.earthquake-card.low{
+    border-left:6px solid #5cb85c;
+}
+
+.earthquake-card.warn{
+    border-left:6px solid orange;
+}
+
+.earthquake-card.mid{
+    border-left:6px solid red;
+}
+
+.earthquake-card.high{
+    border-left:6px solid purple;
+}
+/* ===========================
+   カードレイアウト
+=========================== */
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+.card-title{
+    font-size:18px;
+    font-weight:bold;
+    line-height:1.4;
+}
+
+.card-scale-box{
+    text-align:center;
+    min-width:70px;
+}
+
+.scale-label{
+    font-size:12px;
+    color:#666;
+}
+
+.scale-value{
+    font-size:30px;
+    font-weight:bold;
+    line-height:1;
+}
+
+.card-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-top:10px;
+}
+
+.card-location{
+    flex:1;
+    margin-right:10px;
+}
+
+.card-depth{
+    white-space:nowrap;
+    color:#555;
+}
+
+.card-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-top:14px;
+}
+
+.card-time{
+    color:#666;
+    font-size:13px;
+}
+
+.card-mag{
+    font-weight:bold;
+    color:#444;
+}
+/*=========================
+  震度色
+=========================*/
+
+.earthquake-card{
+    border-left:6px solid transparent;
+    transition:0.2s;
+}
+
+.earthquake-card.low{
+    border-left-color:#4caf50;
+}
+
+.earthquake-card.warn{
+    border-left-color:#ffb300;
+}
+
+.earthquake-card.mid{
+    border-left-color:#ff5722;
+}
+
+.earthquake-card.high{
+    border-left-color:#c62828;
 }

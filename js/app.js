@@ -51,15 +51,15 @@ setInterval(updateClock, 1000);
 // 地震情報更新
 // ==========================
 async function reloadEarthquake() {
-
+    
     const statusBar = document.getElementById("status-bar");
-
+    
     statusBar.textContent = "🔄 地震情報を更新しています...";
 
     try {
 
         const data = await fetchEarthquakeData();
-
+        console.log(data[0].earthquake.time);
         updateStatusBar(data);
         renderEarthquakeList(data);
         addMarkers(data);

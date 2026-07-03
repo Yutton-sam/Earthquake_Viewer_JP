@@ -54,33 +54,18 @@ function addMarkers(earthquakes) {
 // ============================
 // 地図初期化
 // ============================
-async function initMap() {
+function initMap() {
 
-    // まず地図を作る
-    map = L.map('map').setView([36.2, 138], 5);
+    // 地図を作成
+    map = L.map("map").setView([36.2, 138], 5);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
     }).addTo(map);
 
-    // 次にマーカー管理用レイヤーを作る
+    // マーカー管理レイヤー
     markerLayer = L.layerGroup().addTo(map);
-
-    try {
-
-        const data = await fetchEarthquakeData();
-
-        console.log("地震データ:", data);
-
-        addMarkers(data);
-
-    } catch (error) {
-
-        console.error("地図初期化エラー:", error);
-
-    }
 }
-
 // ============================
 // マップ移動
 // ============================

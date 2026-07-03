@@ -29,7 +29,6 @@ function updateStatusBar(data) {
 }
 
 function renderEarthquakeList(data) {
-
     const container = document.getElementById("earthquake-list");
     container.innerHTML = "";
 
@@ -40,7 +39,11 @@ function renderEarthquakeList(data) {
         const hypo = eq?.earthquake?.hypocenter ?? {};
 
         const mag = hypo.magnitude ?? "不明";
-        const depth = hypo.depth ?? "不明";
+        let depth = hypo.depth;
+
+            if (depth == null || depth <= 0) {
+                depth = "不明";
+            }
 
         const scale = scaleToString(eq?.earthquake?.maxScale ?? 0);
         const time = formatTimeNoSeconds(eq?.time ?? eq?.earthquake?.time);
@@ -63,29 +66,40 @@ function renderEarthquakeList(data) {
         const div = document.createElement("div");
 
         // ★クラスは最低限に固定（崩れ防止）
-        div.className = "earthquake-card";
+        div.className = `earthquake-card ${level}`;
         div.dataset.id = eq.id ?? "";
 
-        // ★HTMLは構造安定優先（余計なstyle削除）
+        // カードレイアウト
         div.innerHTML = `
-            <div class="card-title">
-                📍 ${hypo.name || "不明"}
+            <div class="card-header">
+                <div class="card-title">
+                    📍 ${hypo.name || "不明"}
+                </div>
+
+                <div class="card-scale-box">
+                    <div class="scale-label">最大震度</div>
+                    <div class="scale-value">${scale}</div>
+                </div>
             </div>
 
-            <div class="card-main">
-                M${mag}　最大震度 ${scale}
+            <div class="card-row">
+                <div class="card-location">
+                    📌 ${location}
+                </div>
+
+                <div class="card-depth">
+                    深さ ${depth}${depth === "不明" ? "" : " km"}
+                </div>
             </div>
 
-            <div class="card-sub">
-                深さ ${depth} km
-            </div>
+            <div class="card-footer">
+                <div class="card-time">
+                    ${time}
+                </div>
 
-            <div class="card-sub">
-                📌 ${location}
-            </div>
-
-            <div class="card-time">
-                ${time}
+                <div class="card-mag">
+                    M${mag}
+                </div>
             </div>
         `;
 
@@ -117,7 +131,7 @@ function scrollToCard(id) {
     const el = document.querySelector(`[data-id="${id}"]`);
     if (!el) return;
 
-    const container = document.getElementById("earthquake-list");
+    document.getElementById("earthquake-list");
 
     el.scrollIntoView({
         behavior: "smooth",

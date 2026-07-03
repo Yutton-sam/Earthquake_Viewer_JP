@@ -1,17 +1,35 @@
+// ==========================
+// 地震APIの日時表示
+// Safari(iPhone)対応版
+// 例:
+// "2026/07/03 14:06:54.979"
+// ↓
+// "2026年07月03日 14:06"
+// ==========================
 function formatTimeNoSeconds(timeStr) {
 
     if (!timeStr) return "";
 
-    const date = new Date(timeStr);
+    try {
 
-    const yyyy = date.getFullYear();
-    const mm = String(date.getMonth() + 1).padStart(2, "0");
-    const dd = String(date.getDate()).padStart(2, "0");
+        // "2026/07/03 14:06:54.979"
+        const [datePart, timePart] = timeStr.trim().split(" ");
 
-    const hh = String(date.getHours()).padStart(2, "0");
-    const min = String(date.getMinutes()).padStart(2, "0");
+        if (!datePart || !timePart) {
+            return timeStr;
+        }
 
-    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+        const [yyyy, mm, dd] = datePart.split("/");
+        const [hh, min] = timePart.split(":");
+
+        return `${yyyy}年${mm}月${dd}日 ${hh}:${min}`;
+
+    } catch (e) {
+
+        console.error("日時変換エラー:", timeStr, e);
+        return timeStr;
+
+    }
 }
 
 function scaleToString(scale) {
