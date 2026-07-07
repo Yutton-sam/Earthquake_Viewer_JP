@@ -1,436 +1,248 @@
 /* ==========================================
-   Earthquake Viewer JP
-   style.css (Step1 Stable Version)
+   Earthquake Viewer JP - スマホ縦画面・下部スクロール版
 ========================================== */
 
-
-/* ==========================================
-   1. Reset
-========================================== */
-
+/* 1. Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-
-/* ==========================================
-   2. Base Layout
-========================================== */
-
+/* 2. Base Layout */
 body {
     font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
     background: #f4f7fb;
     color: #333;
-    line-height: 1.5;
+    line-height: 1.4;
 }
 
-
-/* ==========================================
-   3. Container (App Frame)
-========================================== */
-
+/* 3. Container */
 .container {
-    max-width: 900px;
+    max-width: 500px; /* スマホの横幅にフィットさせる */
     margin: 0 auto;
-    padding: 16px;
+    padding: 10px;
 }
 
-
-/* ==========================================
-   4. Header
-========================================== */
-
+/* 4. Header */
 header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-
+    align-items: center;
     background: #ffffff;
-    padding: 16px 18px;
-    border-radius: 16px;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-
-    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    margin-bottom: 10px;
 }
 
 .header-title h1 {
-    font-size: 1.4rem;
-    margin-bottom: 6px;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
 }
 
 .header-title p {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: #666;
 }
-
 
 /* Right Info Panel */
 .header-info {
     text-align: right;
     display: flex;
-    gap: 14px;
+    gap: 8px;
 }
 
 .info-block {
     display: flex;
     flex-direction: column;
-    font-size: 0.8rem;
 }
 
 .info-title {
-    font-size: 0.75rem;
+    font-size: 0.6rem;
     color: #888;
-    margin-bottom: 2px;
 }
 
-#current-date,
-#last-update-date {
-    font-size: 0.75rem;
+#current-date, #last-update-date {
+    font-size: 0.6rem;
     color: #666;
 }
 
-#current-time,
-#last-update-time {
-    font-size: 1rem;
+#current-time, #last-update-time {
+    font-size: 0.8rem;
     font-weight: bold;
     color: #222;
 }
 
-
-/* ==========================================
-   5. Status Bar
-========================================== */
-
+/* 5. Status Bar */
 #status-bar {
     background: #e8f5e9;
     color: #2e7d32;
-
-    padding: 12px 14px;
-    border-radius: 12px;
-
-    margin-bottom: 16px;
-
+    padding: 8px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
     font-weight: bold;
+    font-size: 0.8rem;
 }
 
-
-/* ==========================================
-   6. Map Area
-========================================== */
-
-#map {
-    height: 320px;
-
-    background: #ddd;
-    border-radius: 16px;
-
+/* 6. Main Layout (★縦並びに固定) */
+.app-body {
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 16px;
-
-    color: #666;
-    font-size: 0.9rem;
+    flex-direction: column; /* 上下に並べる */
+    gap: 10px;
 }
 
+.app-left {
+    width: 100%;
+}
 
-/* ==========================================
-   7. Mode Buttons
-========================================== */
+.app-right {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    padding: 10px;
+}
 
+/* 7. Map Area */
+#map {
+    height: 280px; /* 縦画面で画面を圧迫しすぎない最適な高さ */
+    background: #ddd;
+    border-radius: 14px;
+    margin-bottom: 10px;
+}
+
+/* 8. Mode Buttons */
 #mode-select {
     display: flex;
-    gap: 10px;
-
-    margin-bottom: 16px;
+    gap: 8px;
 }
 
 button {
     flex: 1;
-
-    padding: 12px;
+    padding: 10px;
     border: none;
-    border-radius: 12px;
-
+    border-radius: 10px;
     background: #ffffff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     cursor: pointer;
-
     font-weight: bold;
-
+    font-size: 0.85rem;
     transition: 0.2s;
-}
-
-button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
 }
 
 button:active {
     transform: scale(0.98);
 }
 
-
-/* ==========================================
-   8. Earthquake List
-========================================== */
-
+/* 9. Earthquake List (★ここが独立してスクロールします) */
 #earthquake-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-}
-
-.earthquake-card {
-    background: #ffffff;
-
-    padding: 14px;
-
-    border-radius: 14px;
-
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-
-    transition: 0.2s;
-}
-
-.earthquake-card:hover {
-    transform: translateY(-2px);
-}
-
-.earthquake-card.active {
-    background: #e3f2fd;
-    border-left: 5px solid #2196f3;
-    transform: translateX(4px);
-}
-
-
-@keyframes pulse {
-    0% {
-        stroke-width: 2;
-        opacity: 0.6;
-    }
-    50% {
-        stroke-width: 6;
-        opacity: 0.2;
-    }
-    100% {
-        stroke-width: 2;
-        opacity: 0;
-    }
-}
-
-/* ==========================================
-   9. Responsive (Mobile)
-========================================== */
-
-@media (max-width: 600px) {
-
-    header {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .header-info {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    #map {
-        height: 260px;
-    }
-}
-/* 選択個所波紋表示 */
-.pulse-circle {
-    animation: pulse 2s infinite;
-}
-#status-bar {
-    transition: 0.3s;
-    padding: 10px;
-    font-weight: bold;
-}
-
-/* 通常 */
-.status-green {
-    background: #2ecc71;
-    color: white;
-}
-
-/* 注意 */
-.status-yellow {
-    background: #f1c40f;
-    color: black;
-}
-
-/* 強め */
-.status-orange {
-    background: #e67e22;
-    color: white;
-}
-
-/* 危険 */
-.status-red {
-    background: #e74c3c;
-    color: white;
-}
-.earthquake-card.low {
-    background: #f2f2f2;
-    color: #333;
-    border-left: 3px solid #ddd;
-}
-.earthquake-card {
-    padding: 10px;
-    margin: 8px;
-    border-radius: 8px;
-    background: #f8f8f8;
-    border-left: 3px solid #e0e0e0;
-    transition: 0.2s;
-}
-/* 震度1〜2 */
-.earthquake-card.low {
-    background: #f2f2f2;
-}
-
-/* 震度3 */
-.earthquake-card.warn {
-    background: #fffbe6;
-    border-left: 3px solid #f1c40f;
-}
-
-/* 震度4 */
-.earthquake-card.mid {
-    background: #fff3e0;
-    border-left: 3px solid #ff9800;
-}
-
-/* 震度5+ */
-.earthquake-card.high {
-    background: #ffe5e5;
-    border-left: 3px solid #e74c3c;
-    font-weight: bold;
-}
-
-/* ステータスバー */
-.status-green { background: #e8f5e9; }
-.status-yellow { background: #fff9c4; }
-.status-orange { background: #ffe0b2; }
-.status-red { background: #ffebee; }
-/* カードフラッシュ */
-.active {
-    background: #fff3cd;
-    transition: 0.3s;
-}
-.earthquake-list {
+    gap: 8px;
+    max-height: 320px; /* 地図の下に収まりつつスクロールできる高さ */
     overflow-y: auto;
-    max-height: 60vh; /* or 100vh調整 */
-}
-.earthquake-card.low{
-    border-left:6px solid #5cb85c;
+    padding-right: 2px;
+    scroll-behavior: smooth; /* 連動時のスクロールを滑らかに */
 }
 
-.earthquake-card.warn{
-    border-left:6px solid orange;
+/* 10. Earthquake Card Base */
+.earthquake-card {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    border-left: 5px solid transparent;
+    cursor: pointer;
+    transition: 0.15s;
 }
 
-.earthquake-card.mid{
-    border-left:6px solid red;
+/* 選択（アクティブ）時のスタイル */
+.earthquake-card.active {
+    background: #e3f2fd !important;
+    border-left-color: #2196f3 !important;
 }
 
-.earthquake-card.high{
-    border-left:6px solid purple;
+/* 震度別の左線と背景色 */
+.earthquake-card.low {
+    border-left-color: #4caf50;
 }
-/* ===========================
-   カードレイアウト
-=========================== */
-
-.card-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
+.earthquake-card.warn {
+    border-left-color: #ffb300;
+    background: #fffbe6;
 }
-
-.card-title{
-    font-size:18px;
-    font-weight:bold;
-    line-height:1.4;
+.earthquake-card.mid {
+    border-left-color: #ff5722;
+    background: #fff3e0;
 }
-
-.card-scale-box{
-    text-align:center;
-    min-width:70px;
+.earthquake-card.high {
+    border-left-color: #c62828;
+    background: #ffe5e5;
+    font-weight: bold;
 }
 
-.scale-label{
-    font-size:12px;
-    color:#666;
+/* 11. Card Internal Layout */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 }
 
-.scale-value{
-    font-size:30px;
-    font-weight:bold;
-    line-height:1;
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.3;
 }
 
-.card-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-top:10px;
+.card-scale-box {
+    text-align: center;
+    min-width: 45px;
 }
 
-.card-location{
-    flex:1;
-    margin-right:10px;
+.scale-label {
+    font-size: 9px;
+    color: #666;
 }
 
-.card-depth{
-    white-space:nowrap;
-    color:#555;
+.scale-value {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1;
 }
 
-.card-footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    margin-top:14px;
+.card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    font-size: 0.8rem;
 }
 
-.card-time{
-    color:#666;
-    font-size:13px;
+.card-location {
+    flex: 1;
+    margin-right: 8px;
+    color: #555;
 }
 
-.card-mag{
-    font-weight:bold;
-    color:#444;
-}
-/*=========================
-  震度色
-=========================*/
-
-.earthquake-card{
-    border-left:6px solid transparent;
-    transition:0.2s;
+.card-depth {
+    white-space: nowrap;
+    color: #666;
 }
 
-.earthquake-card.low{
-    border-left-color:#4caf50;
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
 }
 
-.earthquake-card.warn{
-    border-left-color:#ffb300;
+.card-time {
+    color: #888;
+    font-size: 11px;
 }
 
-.earthquake-card.mid{
-    border-left-color:#ff5722;
-}
-
-.earthquake-card.high{
-    border-left-color:#c62828;
+.card-mag {
+    font-weight: bold;
+    color: #444;
+    font-size: 12px;
 }
