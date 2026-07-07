@@ -1,5 +1,5 @@
 /* ==========================================
-    Earthquake Viewer JP - スマホ縦画面・全体スクロール流動版
+    Earthquake Viewer JP - スマホ縦画面・固定＆潜り込みスクロール版
 ========================================== */
 
 /* 1. Reset */
@@ -9,12 +9,12 @@
     box-sizing: border-box;
 }
 
-/* 2. Base Layout (★ブラウザ本来のスクロールを許可) */
+/* 2. Base Layout (★ブラウザのスクロールを活かしてアドレスバーを細くする) */
 html, body {
     min-height: 100dvh;
     overflow-x: hidden;
-    overflow-y: auto; /* 全体のスクロールを自然に受け入れる */
-    -webkit-overflow-scrolling: touch; /* iOSの滑らかな慣性スクロールを有効化 */
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; /* iOSの滑らかな慣性スクロール */
 }
 
 body {
@@ -29,12 +29,21 @@ body {
     max-width: 500px;
     margin: 0 auto;
     padding: 10px;
-    /* 下部に適度な余白を作り、iPhoneのホームバーと被るのを防ぐ */
+    position: relative;
+    /* 下部にiPhoneのホームバー対策の余白を確保 */
     padding-bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
-/* 4. Header */
+/* 4. Header (★画面上部に完全固定) */
 header {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    max-width: 480px;
+    z-index: 100;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -42,7 +51,6 @@ header {
     padding: 10px 12px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-    margin-bottom: 10px;
 }
 
 .header-title h1 {
@@ -83,13 +91,20 @@ header {
     color: #222;
 }
 
-/* 5. Status Bar */
+/* 5. Status Bar (★ヘッダーの下に完全固定) */
 #status-bar {
+    position: fixed;
+    top: 82px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    max-width: 480px;
+    z-index: 99;
+
     background: #e8f5e9;
     color: #2e7d32;
     padding: 8px 10px;
     border-radius: 10px;
-    margin-bottom: 10px;
     font-weight: bold;
     font-size: 0.8rem;
 }
@@ -101,16 +116,29 @@ header {
     gap: 10px;
 }
 
+/* (★地図とモードボタンエリアをステータスバーの下に完全固定) */
 .app-left {
-    width: 100%;
+    position: fixed;
+    top: 128px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 20px);
+    max-width: 480px;
+    z-index: 98;
+    background: #f4f7fb; /* スクロールしてきたカードが隙間から透けないように背景と同化 */
+    padding-bottom: 5px;
 }
 
+/* (★リストを固定要素の下に潜り込ませるために巨大なマージンを空ける) */
 .app-right {
     width: 100%;
     background: #ffffff;
     border-radius: 14px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.04);
     padding: 10px;
+    margin-top: 465px; /* 上部の固定要素（ヘッダー〜地図）の合計高さ分の余白 */
+    position: relative;
+    z-index: 10;
 }
 
 /* 7. Map Area */
@@ -121,53 +149,40 @@ header {
     margin-bottom: 10px;
 }
 
-/* 8. Mode Buttons (★ここをスクロール時に画面上部に吸着させる) */
+/* 8. Mode Buttons */
 #mode-select {
     display: flex;
     gap: 8px;
-    position: sticky;
-    top: 0;             /* スクロールして画面最上部に抜けようとしたら固定 */
-    z-index: 100;       /* 地図やリストのカードより手前に表示 */
-    background: #ffffff;/* スクロール時に後ろの文字が透けないように背景を白に */
-    padding: 8px 0;     /* 固定された時の上下の余白を確保 */
-    margin-bottom: 8px;
 }
 
 button {
     flex: 1;
-    padding: 12px;      /* スマホでタップしやすいように少し高さを出す */
+    padding: 12px;
     border: none;
     border-radius: 10px;
-    background: #f4f7fb;/* 背景と馴染むように少し調整 */
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     cursor: pointer;
     font-weight: bold;
     font-size: 0.85rem;
     transition: 0.2s;
 }
 
-/* アクティブなボタンの見た目（もしJS側でクラス制御などしていれば） */
-button.active {
-    background: #2196f3;
-    color: #ffffff;
-}
-
 button:active {
     transform: scale(0.98);
 }
 
-/* 9. Earthquake List (★リスト自身の独立スクロールをやめ、ページ全体で流す) */
+/* 9. Earthquake List (★独立スクロールは廃止し、bodyのスクロールに身を委ねる) */
 #earthquake-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    /* 古いmax-heightやoverflowをすべて削除し、コンテンツの分だけ下に自然に伸ばす */
 }
 
 /* 10. Earthquake Card Base */
 .earthquake-card {
     background: #f8f9fa;
-    padding: 12px;      /* タップ領域を広げるために少し広めに */
+    padding: 12px;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     border-left: 5px solid transparent;
@@ -236,7 +251,7 @@ button:active {
     font-size: 0.8rem;
 }
 
-.container .card-location {
+.card-location {
     flex: 1;
     margin-right: 8px;
     color: #555;
