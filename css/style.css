@@ -1,5 +1,5 @@
 /* ==========================================
-   Earthquake Viewer JP - スマホ縦画面・下部スクロール版
+    Earthquake Viewer JP - スマホ縦画面・下部スクロール版
 ========================================== */
 
 /* 1. Reset */
@@ -9,7 +9,12 @@
     box-sizing: border-box;
 }
 
-/* 2. Base Layout */
+/* 2. Base Layout (★アドレスバーを固定) */
+html, body {
+    height: 100dvh;    /* ブラウザのバーを含めた動的な画面高さに固定 */
+    overflow: hidden;  /* 画面全体のスクロールを完全に禁止 */
+}
+
 body {
     font-family: "Segoe UI", "Yu Gothic UI", sans-serif;
     background: #f4f7fb;
@@ -17,11 +22,15 @@ body {
     line-height: 1.4;
 }
 
-/* 3. Container */
+/* 3. Container (★高さを画面いっぱいに広げる) */
 .container {
-    max-width: 500px; /* スマホの横幅にフィットさせる */
+    max-width: 500px;
+    height: 100%;      /* bodyの100dvhいっぱいに広げる */
     margin: 0 auto;
     padding: 10px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)); /* iPhone下部のバー対策 */
+    display: flex;
+    flex-direction: column; /* 子要素を縦に並べて高さを管理 */
 }
 
 /* 4. Header */
@@ -34,6 +43,7 @@ header {
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.06);
     margin-bottom: 10px;
+    flex-shrink: 0; /* ヘッダーが潰れないように固定 */
 }
 
 .header-title h1 {
@@ -83,17 +93,21 @@ header {
     margin-bottom: 10px;
     font-weight: bold;
     font-size: 0.8rem;
+    flex-shrink: 0; /* 潰れないように固定 */
 }
 
-/* 6. Main Layout (★縦並びに固定) */
+/* 6. Main Layout (★縦幅の自動計算を入れる) */
 .app-body {
     display: flex;
-    flex-direction: column; /* 上下に並べる */
+    flex-direction: column;
     gap: 10px;
+    flex: 1;           /* ヘッダー等を除いた画面の残りの高さをすべて使う */
+    overflow: hidden;  /* このエリアからはみ出るスクロールをここでカット */
 }
 
 .app-left {
     width: 100%;
+    flex-shrink: 0;    /* 地図とモードボタンの高さは固定で維持 */
 }
 
 .app-right {
@@ -102,11 +116,15 @@ header {
     border-radius: 14px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.04);
     padding: 10px;
+    flex: 1;           /* app-bodyのさらに残りの高さをこのエリアに全振り */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 /* 7. Map Area */
 #map {
-    height: 280px; /* 縦画面で画面を圧迫しすぎない最適な高さ */
+    height: 280px;
     background: #ddd;
     border-radius: 14px;
     margin-bottom: 10px;
@@ -135,15 +153,16 @@ button:active {
     transform: scale(0.98);
 }
 
-/* 9. Earthquake List (★ここが独立してスクロールします) */
+/* 9. Earthquake List (★画面サイズに追従して独立スクロール) */
 #earthquake-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    max-height: 320px; /* 地図の下に収まりつつスクロールできる高さ */
-    overflow-y: auto;
+    flex: 1;           /* max-height: 320px を廃止。親の残りの高さを自動で一杯に使う */
+    overflow-y: auto;  /* リストだけが独立してスクロールする */
     padding-right: 2px;
-    scroll-behavior: smooth; /* 連動時のスクロールを滑らかに */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* iOSでのスクロールをヌルヌルにする */
 }
 
 /* 10. Earthquake Card Base */
